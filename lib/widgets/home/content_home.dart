@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:petrosafe_app/widgets/cards/card_history_data.dart';
+import 'package:petrosafe_app/widgets/history/content_history.dart';
 
 class HomeContent extends StatelessWidget {
   const HomeContent({super.key});
 
   @override
-  Widget build(Object context) {
+  Widget build(BuildContext context) {
     const rightArrow = Icon(CupertinoIcons.chevron_right, color: Colors.white);
 
     return Scaffold(
@@ -65,7 +67,10 @@ class HomeContent extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
-                  onPressed: () => {},
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HistoryContent()),
+                  ),
                   child: Row(
                     children: <Widget>[
                       Text(
@@ -85,54 +90,7 @@ class HomeContent extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              Card(
-                color: Colors.white,
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundImage: AssetImage(
-                          "lib/assets/images/Truk.png",
-                        ),
-                        radius: 32,
-                      ),
-                      SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Toni Artanto",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text("BP 9987 HJ"),
-                          Row(
-                            children: <Widget>[
-                              Text("8000L"),
-                              SizedBox(width: 4),
-                              Text("|"),
-                              SizedBox(width: 4),
-                              Text("Kategori 8"),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            "24 Oktober 2025",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              HistoryDataCard(),
             ],
           ),
         ),
