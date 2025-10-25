@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:petrosafe_app/widgets/home/content_home.dart';
+import 'package:petrosafe_app/widgets/inspection/content_inspection.dart';
 import 'package:petrosafe_app/widgets/settings/content_settings.dart';
 
 class MainPage extends StatefulWidget {
@@ -13,11 +14,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomeContent(),
-    Center(child: Text("Attendance Page")),
-    SettingsContent(),
-  ];
+  final List<Widget> _pages = const [HomeContent(), SettingsContent()];
 
   void _onItemTapped(int index) {
     setState(() => _selectedIndex = index);
@@ -36,7 +33,10 @@ class _MainPageState extends State<MainPage> {
           child: FloatingActionButton(
             backgroundColor: Colors.blue[900],
             shape: const CircleBorder(),
-            onPressed: () => {},
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InspectionContent()),
+            ),
 
             child: const Icon(
               FeatherIcons.search,
@@ -84,7 +84,7 @@ class _MainPageState extends State<MainPage> {
                 const SizedBox(width: 32),
                 IconButton(
                   iconSize: 28,
-                  onPressed: () => _onItemTapped(2),
+                  onPressed: () => _onItemTapped(1),
                   icon: Icon(
                     FeatherIcons.settings,
                     color: _selectedIndex == 2 ? Colors.blue[900] : Colors.grey,
