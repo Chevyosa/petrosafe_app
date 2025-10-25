@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+
+class InspectionForm extends StatelessWidget {
+  final String hintText;
+
+  const InspectionForm({super.key, required this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusGeometry.circular(16),
+        side: BorderSide(color: Colors.blue),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        child: TextField(
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: hintText,
+            hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+        ),
+      ),
+    );
+  }
+}
