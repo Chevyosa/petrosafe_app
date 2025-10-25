@@ -26,15 +26,15 @@ class InspectionContent extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              InspectionForm(hintText: "Masukkan Nomor Polisi Kendaraan"),
+              PetroForm(hintText: "Masukkan Nomor Polisi Kendaraan"),
 
               SizedBox(height: 16),
 
-              InspectionForm(hintText: "Masukkan Kapasitas Tangki Kendaraan"),
+              PetroForm(hintText: "Masukkan Kapasitas Tangki Kendaraan"),
 
               SizedBox(height: 16),
 
-              InspectionForm(hintText: "Masukkan Kategori Kendaraan (Usia)"),
+              PetroForm(hintText: "Masukkan Kategori Kendaraan (Usia)"),
 
               SizedBox(height: 16),
 

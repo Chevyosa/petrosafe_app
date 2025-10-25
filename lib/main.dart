@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petrosafe_app/pages/page_main.dart';
+import 'package:petrosafe_app/pages/page_login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: const MainPage(),
+      home: const LoginPage(),
     );
   }
 }

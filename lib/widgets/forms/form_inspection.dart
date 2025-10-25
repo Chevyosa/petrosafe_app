@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class InspectionForm extends StatelessWidget {
+class PetroForm extends StatelessWidget {
   final String hintText;
 
-  const InspectionForm({super.key, required this.hintText});
+  const PetroForm({super.key, required this.hintText});
 
   @override
   Widget build(BuildContext context) {
