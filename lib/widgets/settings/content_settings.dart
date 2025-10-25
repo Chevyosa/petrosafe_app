@@ -53,7 +53,7 @@ class SettingsContent extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[700],
                 ),
-                onPressed: () => {},
+                onPressed: () => Navigator.pop(context),
                 child: Row(
                   children: <Widget>[
                     Row(
