@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
+import 'package:petrosafe_app/widgets/inspection/content_inspect.dart';
 
 class InspectionContent extends StatelessWidget {
   const InspectionContent({super.key});
@@ -78,7 +79,12 @@ class InspectionContent extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => InspectContent()),
+                    ),
+                  },
                   child: Text(
                     "Selanjutnya",
                     style: TextStyle(
