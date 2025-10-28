@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:petrosafe_app/widgets/cards/card_camera.dart';
+import 'package:petrosafe_app/widgets/forms/form_catatan.dart';
 
 enum Conformity { sesuai, tidakSesuai }
 
@@ -20,6 +22,7 @@ class ConformityCard extends StatefulWidget {
 
 class _ConformityCardState extends State<ConformityCard> {
   late Conformity _selected;
+  final TextEditingController _messageController = TextEditingController();
 
   @override
   void initState() {
@@ -34,45 +37,64 @@ class _ConformityCardState extends State<ConformityCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF295C99), // biru seperti contoh
-          borderRadius: BorderRadius.circular(32),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                widget.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.2,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF295C99), // biru seperti contoh
+              borderRadius: BorderRadius.circular(32),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
                 ),
-              ),
+                _Option(
+                  label: 'Sesuai',
+                  value: Conformity.sesuai,
+                  group: _selected,
+                  onTap: () => _set(Conformity.sesuai),
+                ),
+                const SizedBox(width: 20),
+                _Option(
+                  label: 'Tidak Sesuai',
+                  value: Conformity.tidakSesuai,
+                  group: _selected,
+                  onTap: () => _set(Conformity.tidakSesuai),
+                ),
+              ],
             ),
-            _Option(
-              label: 'Sesuai',
-              value: Conformity.sesuai,
-              group: _selected,
-              onTap: () => _set(Conformity.sesuai),
-            ),
-            const SizedBox(width: 20),
-            _Option(
-              label: 'Tidak Sesuai',
-              value: Conformity.tidakSesuai,
-              group: _selected,
-              onTap: () => _set(Conformity.tidakSesuai),
-            ),
-          ],
+          ),
         ),
-      ),
+
+        // Muncul tambahan di bawah kalau "Tidak Sesuai"
+        if (_selected == Conformity.tidakSesuai) ...[
+          const SizedBox(height: 12),
+          const CameraCard(
+            targetFoto: "Foto Kelengkapan",
+            sisiFoto: "Kelengkapan",
+            tujuanFoto: "Tidak Sesuai",
+          ),
+          const SizedBox(height: 8),
+          const Text("Catatan"),
+          NoteForm(hintText: "Masukkan Keterangan atau Catatan"),
+        ],
+      ],
     );
   }
 }
@@ -107,9 +129,9 @@ class _Option extends StatelessWidget {
                 value: value,
                 groupValue: group,
                 onChanged: (_) => onTap(),
-                fillColor: MaterialStateProperty.resolveWith((states) {
-                  return Colors.white;
-                }),
+                fillColor: MaterialStateProperty.resolveWith(
+                  (states) => Colors.white,
+                ),
               ),
             ),
           ),
