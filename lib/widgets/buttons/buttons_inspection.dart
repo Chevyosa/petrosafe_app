@@ -3,14 +3,20 @@ import 'package:flutter/material.dart';
 
 class InspectionButton extends StatelessWidget {
   final String title;
-  const InspectionButton({super.key, required this.title});
+  final VoidCallback onPressed;
+
+  const InspectionButton({
+    super.key,
+    required this.title,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     const rightArrow = Icon(CupertinoIcons.chevron_right, color: Colors.white);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
-      onPressed: () => {},
+      onPressed: onPressed,
       child: Row(
         children: <Widget>[
           Text(title, style: TextStyle(color: Colors.white)),

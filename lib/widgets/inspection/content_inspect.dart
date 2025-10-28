@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:petrosafe_app/widgets/buttons/buttons_inspection.dart';
+import 'package:petrosafe_app/widgets/inspection/content_apar.dart';
+import 'package:petrosafe_app/widgets/inspection/content_emergencycutoff.dart';
+import 'package:petrosafe_app/widgets/inspection/content_ganjalroda.dart';
+import 'package:petrosafe_app/widgets/inspection/content_grounding.dart';
+import 'package:petrosafe_app/widgets/inspection/content_p3k.dart';
+import 'package:petrosafe_app/widgets/inspection/content_safetycone.dart';
+import 'package:petrosafe_app/widgets/inspection/content_safetyswitch.dart';
+import 'package:petrosafe_app/widgets/inspection/content_spillkit.dart';
 
 class InspectContent extends StatelessWidget {
   const InspectContent({super.key});
@@ -17,14 +25,93 @@ class InspectContent extends StatelessWidget {
           padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
-              InspectionButton(title: "Cek APAR"),
-              InspectionButton(title: "Cek Spill Kit"),
-              InspectionButton(title: "Cek Ganjal Roda"),
-              InspectionButton(title: "Cek Safety Cone"),
-              InspectionButton(title: "Cek Safety Switch"),
-              InspectionButton(title: "Cek Emergency Cut Off"),
-              InspectionButton(title: "Cek Perlengkapan P3K"),
-              InspectionButton(title: "Cek Grounding"),
+              InspectionButton(
+                title: "Cek APAR",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AparContent()),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Spill Kit",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SpillkitContent()),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Ganjal Roda",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GanjalRodaContent(),
+                    ),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Safety Cone",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SafetyConeContent(),
+                    ),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Safety Switch",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SafetySwitchContent(),
+                    ),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Emergency Cut Off",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EmergencyCutOffContent(),
+                    ),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Perlengkapan P3K",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => P3KContent()),
+                  ),
+                },
+              ),
+              SizedBox(height: 8),
+              InspectionButton(
+                title: "Cek Grounding",
+                onPressed: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => GroundingContent()),
+                  ),
+                },
+              ),
               Spacer(),
               SizedBox(
                 width: double.infinity,
@@ -32,12 +119,7 @@ class InspectContent extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
-                  onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => InspectContent()),
-                    ),
-                  },
+                  onPressed: () => {},
                   child: Text(
                     "Selanjutnya",
                     style: TextStyle(
