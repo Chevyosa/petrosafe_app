@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class NoteForm extends StatelessWidget {
   final String hintText;
+  final TextEditingController messageController;
 
-  const NoteForm({super.key, required this.hintText});
+  const NoteForm({
+    super.key,
+    required this.hintText,
+    required this.messageController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +22,7 @@ class NoteForm extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: TextField(
           maxLines: 3,
+          controller: messageController,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,

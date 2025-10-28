@@ -48,7 +48,7 @@ class _ConformityCardState extends State<ConformityCard> {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF295C99), // biru seperti contoh
+              color: const Color(0xFF295C99),
               borderRadius: BorderRadius.circular(32),
             ),
             child: Row(
@@ -82,7 +82,6 @@ class _ConformityCardState extends State<ConformityCard> {
           ),
         ),
 
-        // Muncul tambahan di bawah kalau "Tidak Sesuai"
         if (_selected == Conformity.tidakSesuai) ...[
           const SizedBox(height: 12),
           const CameraCard(
@@ -92,7 +91,10 @@ class _ConformityCardState extends State<ConformityCard> {
           ),
           const SizedBox(height: 8),
           const Text("Catatan"),
-          NoteForm(hintText: "Masukkan Keterangan atau Catatan"),
+          NoteForm(
+            hintText: "Masukkan Keterangan atau Catatan",
+            messageController: _messageController,
+          ),
         ],
       ],
     );
