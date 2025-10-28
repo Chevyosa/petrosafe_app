@@ -41,7 +41,7 @@ class AparContent extends StatelessWidget {
 
                 const SizedBox(height: 32),
 
-                const Text("Depan Kiri"),
+                const Text("Kabin"),
                 const PetroForm(hintText: "Masukkan Ukuran"),
                 const SizedBox(height: 8),
                 const PetroForm(hintText: "Masukkan Merk"),
