@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:petrosafe_app/widgets/cards/card_camera.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 import 'package:petrosafe_app/widgets/inspection/content_inspect.dart';
 
@@ -8,8 +8,6 @@ class InspectionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const cameraIcon = Icon(FeatherIcons.camera, color: Colors.white);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Inspeksi Kendaraan", style: TextStyle(fontSize: 20)),
@@ -39,36 +37,10 @@ class InspectionContent extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              SizedBox(
-                width: double.infinity,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(20),
-                  ),
-                  color: Colors.red[800],
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      children: <Widget>[
-                        cameraIcon,
-                        SizedBox(height: 10),
-                        Text(
-                          "Ambil 1 Foto Kendaraan",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "Foto Bagian Depan Kendaraan Yang Diinspeksi",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              CameraCard(
+                targetFoto: "1 Foto Kendaraan",
+                sisiFoto: "Depan Kendaraan",
+                tujuanFoto: "Diinspeksi",
               ),
 
               Spacer(),
