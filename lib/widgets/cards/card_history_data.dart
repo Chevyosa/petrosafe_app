@@ -7,6 +7,10 @@ class HistoryDataCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: Colors.blue, width: 1),
+      ),
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Row(
