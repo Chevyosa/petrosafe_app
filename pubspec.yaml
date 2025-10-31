@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_feather_icons: ^2.0.0+1
   image_picker: ^1.2.0
+  flutter_native_splash: ^2.4.7
 
 dev_dependencies:
   flutter_test:
@@ -90,3 +91,13 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: lib/assets/images/logo_petrosafe.png
+  android: true
+  ios: true
+  web: false
+  android_12:
+    image: lib/assets/images/play_store_512.png
+    icon_background_color: "#ffffff"

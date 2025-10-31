@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:petrosafe_app/pages/page_login.dart';
+import 'package:petrosafe_app/widgets/splash/screen_splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: const LoginPage(),
+      home: const SplashScreen(),
     );
   }
 }
