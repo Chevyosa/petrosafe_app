@@ -4,16 +4,36 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:petrosafe_app/pages/page_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SettingsContent extends StatelessWidget {
+class SettingsContent extends StatefulWidget {
   const SettingsContent({super.key});
+
+  @override
+  State<SettingsContent> createState() => _SettingsContentState();
+}
+
+class _SettingsContentState extends State<SettingsContent> {
+  String userName = '';
+  String userPosition = '';
+  String userPhoto = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('user_name') ?? 'Pengguna';
+      userPosition = prefs.getString('user_position') ?? '-';
+      userPhoto = prefs.getString('user_photo') ?? '';
+    });
+  }
 
   Future<void> logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-
-    await prefs.remove('token');
-    await prefs.remove('user_name');
-    await prefs.remove('user_position');
-    await prefs.remove('user_photo');
+    await prefs.clear();
 
     Navigator.pushAndRemoveUntil(
       context,
@@ -40,26 +60,28 @@ class SettingsContent extends StatelessWidget {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  const CircleAvatar(
-                    backgroundImage: AssetImage(
-                      "lib/assets/images/userphoto.jpeg",
-                    ),
+                  CircleAvatar(
+                    backgroundImage: userPhoto.isNotEmpty
+                        ? NetworkImage(userPhoto)
+                        : const AssetImage("lib/assets/images/userphoto.jpeg")
+                              as ImageProvider,
                     radius: 50,
                   ),
                   const SizedBox(width: 12),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[
+                    children: <Widget>[
                       Text(
-                        "Riyanda Azis Febrian",
-                        style: TextStyle(
-                          fontSize: 16,
+                        userName,
+                        style: const TextStyle(
+                          fontSize: 20,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
-                        "Inspektor Kendaraan",
-                        style: TextStyle(fontSize: 12),
+                        userPosition.isNotEmpty
+                            ? userPosition
+                            : "Inspektor Kendaraan",
                       ),
                     ],
                   ),
