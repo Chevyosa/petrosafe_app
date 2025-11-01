@@ -1,9 +1,77 @@
 import 'package:flutter/material.dart';
 import 'package:petrosafe_app/pages/page_main.dart';
-import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:petrosafe_app/widgets/forms/form_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  bool isLoading = false;
+
+  Future<void> saveLoginData(String token, Map<String, dynamic> user) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    await prefs.setString('user_name', user['name'] ?? '');
+    await prefs.setString('user_position', user['position'] ?? '');
+    await prefs.setString('user_photo', user['photo_url'] ?? '');
+  }
+
+  Future<void> login() async {
+    setState(() => isLoading = true);
+
+    final url = Uri.parse("http://10.0.2.2:3000/api/auth/login");
+    final body = {
+      "email": emailController.text.trim(),
+      "password": passwordController.text.trim(),
+    };
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(body),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['token'] != null) {
+        final token = data['token'];
+        final user = data['user'];
+
+        await saveLoginData(token, user);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Login berhasil, selamat datang ${user['name']}"),
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(data['message'] ?? "Login gagal")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Terjadi kesalahan koneksi: $e")));
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,41 +114,45 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
 
-                SizedBox(height: 16),
-
-                PetroForm(hintText: "Masukkan Email Anda"),
-
-                SizedBox(height: 16),
-
-                PetroForm(hintText: "Masukkan Kata Sandi Anda"),
-
-                SizedBox(height: 16),
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[Text("Lupa Kata Sandi?")],
+                const SizedBox(height: 16),
+                LoginForm(
+                  hintText: "Masukkan Email Anda",
+                  controller: emailController,
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
+                LoginForm(
+                  hintText: "Masukkan Kata Sandi Anda",
+                  controller: passwordController,
+                  obscureText: true,
+                ),
+
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [Text("Lupa Kata Sandi?")],
+                ),
+
+                const SizedBox(height: 24),
 
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(vertical: 14),
                     ),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
-                    ),
-                    child: Text(
-                      "Masuk",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
+                    onPressed: isLoading ? null : login,
+                    child: isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            "Masuk",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ],
