@@ -87,7 +87,7 @@ class _MainPageState extends State<MainPage> {
                   onPressed: () => _onItemTapped(1),
                   icon: Icon(
                     FeatherIcons.settings,
-                    color: _selectedIndex == 2 ? Colors.blue[900] : Colors.grey,
+                    color: _selectedIndex == 1 ? Colors.blue[900] : Colors.grey,
                   ),
                 ),
               ],
