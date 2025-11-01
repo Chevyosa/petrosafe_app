@@ -1,15 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class InspectionButton extends StatelessWidget {
+class PetroButton extends StatelessWidget {
   final String title;
   final VoidCallback onPressed;
 
-  const InspectionButton({
-    super.key,
-    required this.title,
-    required this.onPressed,
-  });
+  const PetroButton({super.key, required this.title, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

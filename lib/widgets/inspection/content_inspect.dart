@@ -40,7 +40,7 @@ class InspectContent extends StatelessWidget {
           child: Column(
             children: [
               for (var item in inspections) ...[
-                InspectionButton(
+                PetroButton(
                   title: item["title"] as String,
                   onPressed: () {
                     Navigator.push(

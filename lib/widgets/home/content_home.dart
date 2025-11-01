@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:petrosafe_app/widgets/buttons/buttons_inspection.dart';
 import 'package:petrosafe_app/widgets/cards/card_history_data.dart';
 import 'package:petrosafe_app/widgets/history/content_history.dart';
 
@@ -8,8 +8,6 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const rightArrow = Icon(CupertinoIcons.chevron_right, color: Colors.white);
-
     final List<Map<String, String>> historyData = [
       {
         "urlPhoto": "lib/assets/images/Truk.png",
@@ -101,28 +99,11 @@ class HomeContent extends StatelessWidget {
 
               const SizedBox(height: 32),
 
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HistoryContent()),
-                    );
-                  },
-                  child: Row(
-                    children: const <Widget>[
-                      Text(
-                        "Lihat Seluruh Riwayat Inspeksi",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Spacer(),
-                      rightArrow,
-                    ],
-                  ),
+              PetroButton(
+                title: "Lihat Seluruh Riwayat Inspeksi",
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HistoryContent()),
                 ),
               ),
 
