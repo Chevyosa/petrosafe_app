@@ -1,62 +1,86 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:petrosafe_app/widgets/cards/card_history_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HistoryContent extends StatelessWidget {
+class HistoryContent extends StatefulWidget {
   const HistoryContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, String>> historyData = [
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 8897 HJ",
-        "inspector": "Toni",
-        "capacity": "8000",
-        "category": "8",
-        "date": "24 Oktober 2025",
-      },
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 1172 FA",
-        "inspector": "Rudi",
-        "capacity": "5000",
-        "category": "5",
-        "date": "22 Oktober 2025",
-      },
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 2278 DJ",
-        "inspector": "Agus",
-        "capacity": "6000",
-        "category": "6",
-        "date": "18 Oktober 2025",
-      },
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 8897 HJ",
-        "inspector": "Toni",
-        "capacity": "8000",
-        "category": "8",
-        "date": "24 Oktober 2025",
-      },
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 1172 FA",
-        "inspector": "Rudi",
-        "capacity": "5000",
-        "category": "5",
-        "date": "22 Oktober 2025",
-      },
-      {
-        "urlPhoto": "lib/assets/images/Truk.png",
-        "platenumber": "BP 2278 DJ",
-        "inspector": "Agus",
-        "capacity": "6000",
-        "category": "6",
-        "date": "18 Oktober 2025",
-      },
-    ];
+  State<HistoryContent> createState() => _HistoryContentState();
+}
 
+class _HistoryContentState extends State<HistoryContent> {
+  bool isLoading = true;
+  List<Map<String, dynamic>> historyData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    initializeDateFormatting('id_ID', null).then((_) {
+      fetchInspections();
+    });
+  }
+
+  Future<void> fetchInspections() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      if (token == null) {
+        throw Exception('Token tidak ditemukan, silakan login kembali.');
+      }
+
+      final url = Uri.parse('http://10.0.2.2:3000/api/inspections');
+      final response = await http.get(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        final List inspections = data['data'] ?? [];
+
+        final List<Map<String, dynamic>> mapped = inspections.map((item) {
+          final DateTime date =
+              DateTime.tryParse(item['inspection_date'] ?? '') ??
+              DateTime.now();
+
+          return {
+            "urlPhoto": "lib/assets/images/Truk.png",
+            "platenumber": item["nopol"] ?? "-",
+            "inspector": item["inspector"] ?? "-",
+            "capacity": item["kapasitas"] ?? "-",
+            "category": item["kategori"] ?? "-",
+            "date": DateFormat("d MMMM yyyy", "id_ID").format(date),
+          };
+        }).toList();
+
+        setState(() {
+          historyData = mapped;
+          isLoading = false;
+        });
+      } else {
+        throw Exception(
+          'Gagal mengambil data inspeksi (${response.statusCode})',
+        );
+      }
+    } catch (e) {
+      setState(() => isLoading = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Terjadi kesalahan saat memuat data: $e")),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -66,7 +90,6 @@ class HistoryContent extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Bagian atas tetap di tempat
             Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
@@ -76,7 +99,6 @@ class HistoryContent extends StatelessWidget {
               ),
             ),
 
-            // 🔽 Bagian tengah scrollable
             Expanded(
               child: SafeArea(
                 top: false,
@@ -84,16 +106,20 @@ class HistoryContent extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      for (var item in historyData)
-                        HistoryDataCard(
-                          urlPhoto: item["urlPhoto"]!,
-                          platenumber: item["platenumber"]!,
-                          inspector: item["inspector"]!,
-                          capacity: item["capacity"]!,
-                          category: item["category"]!,
-                          date: item["date"]!,
-                        ),
-                      const SizedBox(height: 20),
+                      if (isLoading)
+                        const Center(child: CircularProgressIndicator())
+                      else if (historyData.isEmpty)
+                        const Text("Belum ada data inspeksi.")
+                      else
+                        for (var item in historyData)
+                          HistoryDataCard(
+                            urlPhoto: item["urlPhoto"],
+                            platenumber: item["platenumber"],
+                            inspector: item["inspector"],
+                            capacity: item["capacity"],
+                            category: item["category"],
+                            date: item["date"],
+                          ),
                     ],
                   ),
                 ),
