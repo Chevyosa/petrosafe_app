@@ -17,12 +17,15 @@ class InspectionButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(backgroundColor: Colors.blue[900]),
       onPressed: onPressed,
-      child: Row(
-        children: <Widget>[
-          Text(title, style: TextStyle(color: Colors.white)),
-          Spacer(),
-          rightArrow,
-        ],
+      child: Padding(
+        padding: EdgeInsets.only(top: 12, bottom: 12),
+        child: Row(
+          children: <Widget>[
+            Text(title, style: TextStyle(color: Colors.white, fontSize: 16)),
+            Spacer(),
+            rightArrow,
+          ],
+        ),
       ),
     );
   }
