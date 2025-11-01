@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
 class HistoryDataCard extends StatelessWidget {
-  const HistoryDataCard({super.key});
+  final String urlPhoto;
+  final String inspector;
+  final String platenumber;
+  final String capacity;
+  final String category;
+  final String date;
+
+  const HistoryDataCard({
+    super.key,
+    required this.urlPhoto,
+    required this.platenumber,
+    required this.inspector,
+    required this.capacity,
+    required this.category,
+    required this.date,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,35 +30,30 @@ class HistoryDataCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Row(
           children: <Widget>[
-            CircleAvatar(
-              backgroundImage: AssetImage("lib/assets/images/Truk.png"),
-              radius: 32,
-            ),
+            CircleAvatar(backgroundImage: AssetImage(urlPhoto), radius: 32),
             SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Toni Artanto",
+                  inspector,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                Text("BP 9987 HJ"),
+                Text(platenumber),
                 Row(
                   children: <Widget>[
-                    Text("8000L"),
+                    Text("$capacity L"),
                     SizedBox(width: 4),
                     Text("|"),
                     SizedBox(width: 4),
-                    Text("Kategori 8"),
+                    Text("Kategori $category"),
                   ],
                 ),
               ],
             ),
             Spacer(),
             Column(
-              children: <Widget>[
-                Text("24 Oktober 2025", style: TextStyle(fontSize: 12)),
-              ],
+              children: <Widget>[Text(date, style: TextStyle(fontSize: 12))],
             ),
           ],
         ),
