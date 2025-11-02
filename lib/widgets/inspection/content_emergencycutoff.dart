@@ -3,8 +3,15 @@ import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
 import 'package:petrosafe_app/widgets/cards/card_functionality.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 
-class EmergencyCutOffContent extends StatelessWidget {
+class EmergencyCutOffContent extends StatefulWidget {
   const EmergencyCutOffContent({super.key});
+
+  @override
+  State<EmergencyCutOffContent> createState() => _EmergencyCutOffState();
+}
+
+class _EmergencyCutOffState extends State<EmergencyCutOffContent> {
+  final totalController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,10 @@ class EmergencyCutOffContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text("Jumlah"),
-              const PetroForm(hintText: "Masukkan Jumlah"),
+              PetroForm(
+                hintText: "Masukkan Jumlah",
+                controller: totalController,
+              ),
               const SizedBox(height: 8),
               FuncitonalityCard(),
               const SizedBox(height: 8),

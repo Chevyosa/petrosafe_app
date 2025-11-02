@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 
-class GanjalRodaContent extends StatelessWidget {
+class GanjalRodaContent extends StatefulWidget {
   const GanjalRodaContent({super.key});
+
+  @override
+  State<GanjalRodaContent> createState() => _GanjalRodaState();
+}
+
+class _GanjalRodaState extends State<GanjalRodaContent> {
+  final totalController = TextEditingController();
+  final materialController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +30,16 @@ class GanjalRodaContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text("Jumlah Tersedia"),
-              const PetroForm(hintText: "Masukkan Jumlah Tersedia"),
+              PetroForm(
+                hintText: "Masukkan Jumlah Tersedia",
+                controller: totalController,
+              ),
               const SizedBox(height: 8),
               const Text("Material"),
-              const PetroForm(hintText: "Masukkan Material"),
+              PetroForm(
+                hintText: "Masukkan Material",
+                controller: materialController,
+              ),
               const SizedBox(height: 8),
               const ConformityCard(),
 

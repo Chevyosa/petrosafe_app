@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 
-class SafetyConeContent extends StatelessWidget {
+class SafetyConeContent extends StatefulWidget {
   const SafetyConeContent({super.key});
+
+  @override
+  State<SafetyConeContent> createState() => _SafetyConeContentState();
+}
+
+class _SafetyConeContentState extends State<SafetyConeContent> {
+  final totalConeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,10 @@ class SafetyConeContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text("Jumlah Tersedia"),
-              const PetroForm(hintText: "Masukkan Jumlah Tersedia"),
+              PetroForm(
+                hintText: "Masukkan Jumlah Tersedia",
+                controller: totalConeController,
+              ),
               const SizedBox(height: 8),
               const ConformityCard(),
 

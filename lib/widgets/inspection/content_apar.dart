@@ -2,8 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 
-class AparContent extends StatelessWidget {
+class AparContent extends StatefulWidget {
   const AparContent({super.key});
+
+  @override
+  State<AparContent> createState() => _AparContentState();
+}
+
+class _AparContentState extends State<AparContent> {
+  final rightSize = TextEditingController();
+  final leftSize = TextEditingController();
+
+  final rightBrand = TextEditingController();
+  final leftBrand = TextEditingController();
+
+  final cabinSize = TextEditingController();
+  final cabinBrand = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -24,27 +38,27 @@ class AparContent extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 const Text("Belakang Kanan"),
-                const PetroForm(hintText: "Masukkan Ukuran"),
+                PetroForm(hintText: "Masukkan Ukuran", controller: rightSize),
                 const SizedBox(height: 8),
-                const PetroForm(hintText: "Masukkan Merk"),
+                PetroForm(hintText: "Masukkan Merk", controller: rightBrand),
                 const SizedBox(height: 8),
                 const ConformityCard(),
 
                 const SizedBox(height: 32),
 
                 const Text("Belakang Kiri"),
-                const PetroForm(hintText: "Masukkan Ukuran"),
+                PetroForm(hintText: "Masukkan Ukuran", controller: leftBrand),
                 const SizedBox(height: 8),
-                const PetroForm(hintText: "Masukkan Merk"),
+                PetroForm(hintText: "Masukkan Merk", controller: leftBrand),
                 const SizedBox(height: 8),
                 const ConformityCard(),
 
                 const SizedBox(height: 32),
 
                 const Text("Kabin"),
-                const PetroForm(hintText: "Masukkan Ukuran"),
+                PetroForm(hintText: "Masukkan Ukuran", controller: cabinSize),
                 const SizedBox(height: 8),
-                const PetroForm(hintText: "Masukkan Merk"),
+                PetroForm(hintText: "Masukkan Merk", controller: cabinBrand),
                 const SizedBox(height: 8),
                 const ConformityCard(),
 

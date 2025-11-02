@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 
-class GroundingContent extends StatelessWidget {
+class GroundingContent extends StatefulWidget {
   const GroundingContent({super.key});
+
+  @override
+  State<GroundingContent> createState() => _GroundingContentState();
+}
+
+class _GroundingContentState extends State<GroundingContent> {
+  final lengthController = TextEditingController();
+  final notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +30,20 @@ class GroundingContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text("Grounding"),
-              const PetroForm(hintText: "Masukkan Panjang Grounding"),
+              PetroForm(
+                hintText: "Masukkan Panjang Grounding",
+                controller: lengthController,
+              ),
               const SizedBox(height: 8),
               const ConformityCard(),
 
               const SizedBox(height: 32),
 
               const Text("Arde"),
-              const PetroForm(hintText: "Masukkan Keterangan Arde"),
+              PetroForm(
+                hintText: "Masukkan Keterangan Arde",
+                controller: notesController,
+              ),
               const SizedBox(height: 8),
               const ConformityCard(),
 
