@@ -95,18 +95,24 @@ class _SettingsContentState extends State<SettingsContent> {
                   backgroundColor: Colors.red[700],
                 ),
                 onPressed: () => logout(context),
-                child: Row(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        logoutIcon,
-                        SizedBox(width: 10),
-                        Text("Keluar", style: TextStyle(color: Colors.white)),
-                      ],
-                    ),
-                    Spacer(),
-                    rightArrow,
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.only(top: 12, bottom: 12),
+                  child: Row(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          logoutIcon,
+                          SizedBox(width: 10),
+                          Text(
+                            "Keluar",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      rightArrow,
+                    ],
+                  ),
                 ),
               ),
             ],
