@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:petrosafe_app/widgets/cards/card_history_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +19,96 @@ class _HistoryContentState extends State<HistoryContent> {
   bool isLoading = true;
   List<Map<String, dynamic>> historyData = [];
 
+  DateTimeRange? selectedRange;
+
+  Future<void> pickDateRange() async {
+    final DateTime now = DateTime.now();
+
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(now.year - 2),
+      lastDate: DateTime(now.year + 1),
+      initialDateRange:
+          selectedRange ??
+          DateTimeRange(
+            start: DateTime(now.year, now.month, 1),
+            end: DateTime.now(),
+          ),
+      locale: const Locale('id', 'ID'),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.green.shade700,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      setState(() {
+        selectedRange = picked;
+      });
+    }
+  }
+
+  /// 📤 Fungsi ekspor ke Excel
+  Future<void> exportToExcel() async {
+    try {
+      if (selectedRange == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Pilih rentang tanggal terlebih dahulu!"),
+          ),
+        );
+        return;
+      }
+
+      setState(() => isLoading = true);
+
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      if (token == null) {
+        throw Exception('Token tidak ditemukan, silakan login kembali.');
+      }
+
+      final from = DateFormat('yyyy-MM-dd').format(selectedRange!.start);
+      final to = DateFormat('yyyy-MM-dd').format(selectedRange!.end);
+      final dio = Dio();
+
+      final url =
+          'http://10.0.2.2:3000/api/inspections/export?from=$from&to=$to';
+      final filePath = '/storage/emulated/0/Download/riwayat_inspeksi.xlsx';
+
+      final response = await dio.download(
+        url,
+        filePath,
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("File berhasil disimpan untuk periode $from - $to"),
+          ),
+        );
+        await OpenFilex.open(filePath);
+      } else {
+        throw Exception("Gagal mengunduh file (${response.statusCode})");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Gagal ekspor: $e")));
+    } finally {
+      setState(() => isLoading = false);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -29,9 +121,7 @@ class _HistoryContentState extends State<HistoryContent> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
-      if (token == null) {
-        throw Exception('Token tidak ditemukan, silakan login kembali.');
-      }
+      if (token == null) throw Exception('Token tidak ditemukan.');
 
       final url = Uri.parse('http://10.0.2.2:3000/api/inspections');
       final response = await http.get(
@@ -44,14 +134,12 @@ class _HistoryContentState extends State<HistoryContent> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         final List inspections = data['data'] ?? [];
 
-        final List<Map<String, dynamic>> mapped = inspections.map((item) {
+        final mapped = inspections.map((item) {
           final DateTime date =
               DateTime.tryParse(item['inspection_date'] ?? '') ??
               DateTime.now();
-
           return {
             "urlPhoto": "lib/assets/images/Truk.png",
             "platenumber": item["nopol"] ?? "-",
@@ -81,6 +169,11 @@ class _HistoryContentState extends State<HistoryContent> {
 
   @override
   Widget build(BuildContext context) {
+    final selectedText = selectedRange == null
+        ? "Belum dipilih"
+        : "${DateFormat('d MMM yyyy', 'id_ID').format(selectedRange!.start)} - "
+              "${DateFormat('d MMM yyyy', 'id_ID').format(selectedRange!.end)}";
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -92,10 +185,45 @@ class _HistoryContentState extends State<HistoryContent> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Text(
-                "Data inspeksi di bawah adalah data keseluruhan inspeksi. "
-                "Scroll untuk melihat data yang lainnya. Untuk rekap, klik tombol ekspor di bawah.",
-                style: const TextStyle(fontSize: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Pilih rentang tanggal untuk ekspor:",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: pickDateRange,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            selectedText,
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                          const Icon(Icons.calendar_today, color: Colors.green),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Data inspeksi di bawah adalah keseluruhan data. "
+                    "Scroll untuk melihat data lain. Untuk rekap, pilih tanggal dan klik ekspor.",
+                    style: TextStyle(fontSize: 15),
+                  ),
+                ],
               ),
             ),
 
@@ -136,9 +264,7 @@ class _HistoryContentState extends State<HistoryContent> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    onPressed: () {
-                      // aksi ekspor
-                    },
+                    onPressed: exportToExcel,
                     child: const Text(
                       "Ekspor ke Excel",
                       style: TextStyle(
