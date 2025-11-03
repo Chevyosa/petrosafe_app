@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class NoteForm extends StatelessWidget {
   final String hintText;
   final TextEditingController messageController;
+  final ValueChanged<String>? onChanged;
 
   const NoteForm({
     super.key,
     required this.hintText,
     required this.messageController,
+    this.onChanged,
   });
 
   @override

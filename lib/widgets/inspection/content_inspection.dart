@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:petrosafe_app/widgets/cards/card_camera.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 import 'package:petrosafe_app/widgets/inspection/content_inspect.dart';
@@ -17,7 +16,7 @@ class _InspectionContentState extends State<InspectionContent> {
   final capacityController = TextEditingController();
   final categoryController = TextEditingController();
 
-  XFile? _vehiclePhoto;
+  String? _vehiclePhoto;
 
   bool isLoading = false;
 
@@ -32,6 +31,10 @@ class _InspectionContentState extends State<InspectionContent> {
     await prefs.setString("vehicle_capacity", kapasitas);
     await prefs.setString("vehicle_category", kategori);
     await prefs.setString("vehicle_photo", photoPath);
+  }
+
+  void _setPhoto(String path) {
+    setState(() => _vehiclePhoto = path);
   }
 
   bool checkVehicleData() {
@@ -56,7 +59,7 @@ class _InspectionContentState extends State<InspectionContent> {
       nopol: plateController.text,
       kapasitas: capacityController.text,
       kategori: categoryController.text,
-      photoPath: _vehiclePhoto!.path,
+      photoPath: _vehiclePhoto ?? "",
     );
 
     Navigator.push(
@@ -113,9 +116,7 @@ class _InspectionContentState extends State<InspectionContent> {
                     targetFoto: "1 Foto Kendaraan",
                     sisiFoto: "Depan Kendaraan",
                     tujuanFoto: "Diinspeksi",
-                    onImageTaken: (image) {
-                      setState(() => _vehiclePhoto = image);
-                    },
+                    onCaptured: (path) => _setPhoto(path),
                   ),
                 ],
               ),
