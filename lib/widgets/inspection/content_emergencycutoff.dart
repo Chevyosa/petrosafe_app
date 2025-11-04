@@ -38,7 +38,7 @@ class _EmergencyCutOffState extends State<EmergencyCutOffContent> {
                 controller: totalController,
               ),
               const SizedBox(height: 8),
-              FuncitonalityCard(),
+              FunctionalityCard(),
               const SizedBox(height: 8),
               const ConformityCard(),
 

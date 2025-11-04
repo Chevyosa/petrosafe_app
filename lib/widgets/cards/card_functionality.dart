@@ -1,102 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:petrosafe_app/widgets/cards/card_camera.dart';
-import 'package:petrosafe_app/widgets/forms/form_catatan.dart';
 
 enum Functionality { berfungsi, tidakBerfungsi }
 
-class FuncitonalityCard extends StatefulWidget {
+class FunctionalityCard extends StatefulWidget {
   final String title;
-  final ValueChanged<Functionality>? onChanged;
+  final ValueChanged<Map<String, dynamic>>? onChanged;
   final Functionality? initial;
 
-  const FuncitonalityCard({
+  const FunctionalityCard({
     super.key,
-    this.title = 'Berfungsi?',
+    this.title = 'Sudah Berfungsi?',
     this.onChanged,
     this.initial,
   });
 
   @override
-  State<FuncitonalityCard> createState() => _ConformityCardState();
+  State<FunctionalityCard> createState() => _FunctionalityCardState();
 }
 
-class _ConformityCardState extends State<FuncitonalityCard> {
-  late Functionality _selected;
-  final TextEditingController _messageController = TextEditingController();
+class _FunctionalityCardState extends State<FunctionalityCard> {
+  Functionality? _selected;
 
   @override
   void initState() {
     super.initState();
-    _selected = widget.initial ?? Functionality.berfungsi;
+    _selected = widget.initial;
   }
 
-  void _set(Functionality v) {
-    setState(() => _selected = v);
-    widget.onChanged?.call(v);
+  void _set(Functionality value) {
+    setState(() => _selected = value);
+    widget.onChanged?.call({"status": value.name});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32),
-          ),
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF295C99),
-              borderRadius: BorderRadius.circular(32),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 0.2,
-                    ),
-                  ),
-                ),
-                _Option(
-                  label: 'Berfungsi',
-                  value: Functionality.berfungsi,
-                  group: _selected,
-                  onTap: () => _set(Functionality.berfungsi),
-                ),
-                const SizedBox(width: 20),
-                _Option(
-                  label: 'Tidak Berfungsi',
-                  value: Functionality.tidakBerfungsi,
-                  group: _selected,
-                  onTap: () => _set(Functionality.tidakBerfungsi),
-                ),
-              ],
-            ),
-          ),
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF295C99),
+          borderRadius: BorderRadius.circular(32),
         ),
-
-        if (_selected == Functionality.tidakBerfungsi) ...[
-          const SizedBox(height: 12),
-          const CameraCard(
-            targetFoto: "Foto Kelengkapan",
-            sisiFoto: "Kelengkapan",
-            tujuanFoto: "Tidak Sesuai",
-          ),
-          const SizedBox(height: 8),
-          const Text("Catatan"),
-          NoteForm(
-            hintText: "Masukkan Keterangan atau Catatan",
-            messageController: _messageController,
-          ),
-        ],
-      ],
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
+            _Option(
+              label: 'Berfungsi',
+              value: Functionality.berfungsi,
+              group: _selected,
+              onTap: () => _set(Functionality.berfungsi),
+            ),
+            const SizedBox(width: 20),
+            _Option(
+              label: 'Tidak Berfungsi',
+              value: Functionality.tidakBerfungsi,
+              group: _selected,
+              onTap: () => _set(Functionality.tidakBerfungsi),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -104,7 +79,7 @@ class _ConformityCardState extends State<FuncitonalityCard> {
 class _Option extends StatelessWidget {
   final String label;
   final Functionality value;
-  final Functionality group;
+  final Functionality? group;
   final VoidCallback onTap;
 
   const _Option({
@@ -117,7 +92,6 @@ class _Option extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Column(
         children: [
