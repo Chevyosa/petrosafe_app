@@ -8,30 +8,177 @@ import 'package:petrosafe_app/widgets/inspection/content_p3k.dart';
 import 'package:petrosafe_app/widgets/inspection/content_safetycone.dart';
 import 'package:petrosafe_app/widgets/inspection/content_safetyswitch.dart';
 import 'package:petrosafe_app/widgets/inspection/content_spillkit.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class InspectContent extends StatelessWidget {
+class InspectContent extends StatefulWidget {
   const InspectContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final inspections = [
-      {"title": "Cek APAR", "page": const AparContent()},
-      {"title": "Cek Spill Kit", "page": const SpillkitContent()},
-      {"title": "Cek Ganjal Roda", "page": const GanjalRodaContent()},
-      {"title": "Cek Safety Cone", "page": const SafetyConeContent()},
-      {"title": "Cek Safety Switch", "page": const SafetySwitchContent()},
-      {
-        "title": "Cek Emergency Cut Off",
-        "page": const EmergencyCutOffContent(),
-      },
-      {"title": "Cek Perlengkapan P3K", "page": const P3KContent()},
-      {"title": "Cek Grounding", "page": const GroundingContent()},
-    ];
+  State<InspectContent> createState() => _InspectContentState();
+}
 
+class _InspectContentState extends State<InspectContent> {
+  final inspections = [
+    {
+      "key": "apar_inspection",
+      "title": "Cek APAR",
+      "page": const AparContent(),
+    },
+    {
+      "key": "spillkit_inspection",
+      "title": "Cek Spill Kit",
+      "page": const SpillkitContent(),
+    },
+    {
+      "key": "ganjal_roda_inspection",
+      "title": "Cek Ganjal Roda",
+      "page": const GanjalRodaContent(),
+    },
+    {
+      "key": "safety_cone_inspection",
+      "title": "Cek Safety Cone",
+      "page": const SafetyConeContent(),
+    },
+    {
+      "key": "safety_switch_inspection",
+      "title": "Cek Safety Switch",
+      "page": const SafetySwitchContent(),
+    },
+    {
+      "key": "emergency_cutoff_inspection",
+      "title": "Cek Emergency Cut Off",
+      "page": const EmergencyCutOffContent(),
+    },
+    {
+      "key": "p3k_inspection",
+      "title": "Cek Perlengkapan P3K",
+      "page": const P3KContent(),
+    },
+    {
+      "key": "grounding_inspection",
+      "title": "Cek Grounding",
+      "page": const GroundingContent(),
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _clearOldInspectionData();
+  }
+
+  @override
+  void dispose() {
+    _clearOldInspectionData();
+    super.dispose();
+  }
+
+  Future<void> _clearOldInspectionData() async {
+    final prefs = await SharedPreferences.getInstance();
+    for (final item in inspections) {
+      await prefs.remove(item["key"] as String);
+    }
+    debugPrint(
+      "Semua data inspeksi lokal dihapus saat keluar/masuk halaman InspectContent",
+    );
+  }
+
+  Future<void> _validateAllInspections(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    final missing = <String>[];
+
+    for (final item in inspections) {
+      final rawData = prefs.getString(item["key"] as String);
+      if (rawData == null) {
+        missing.add(item["title"] as String);
+        continue;
+      }
+
+      final decoded = jsonDecode(rawData);
+      if (decoded is Map && decoded.isEmpty) {
+        missing.add(item["title"] as String);
+      }
+    }
+
+    if (missing.isNotEmpty) {
+      _showWarningDialog(context, missing);
+    } else {
+      _showConfirmDialog(context);
+    }
+  }
+
+  void _showWarningDialog(BuildContext context, List<String> missing) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text(
+          "Data Belum Lengkap",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: Text(
+          "Beberapa inspeksi berikut belum diisi:\n\n• ${missing.join('\n• ')}\n\n"
+          "Silakan lengkapi terlebih dahulu sebelum mengirim.",
+          style: const TextStyle(fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Tutup", style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showConfirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text(
+          "Konfirmasi Pengiriman",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: const Text(
+          "Semua data inspeksi sudah lengkap dan siap dikirim.\n\n"
+          "Setelah dikirim, data tidak dapat diubah. Apakah Anda yakin ingin melanjutkan?",
+          style: TextStyle(fontSize: 14, height: 1.5),
+        ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Batal", style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            onPressed: () {
+              Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Semua data lengkap! Siap dikirim ke server."),
+                  backgroundColor: Colors.green,
+                ),
+              );
+              // TODO: lanjut ke API integrasi di sini
+            },
+            child: const Text("Kirim", style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Inspeksi Kendaraan", style: TextStyle(fontSize: 20)),
         backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
       ),
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -58,7 +205,7 @@ class InspectContent extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                   ),
-                  onPressed: () => _showConfirmDialog(context),
+                  onPressed: () => _validateAllInspections(context),
                   child: const Text(
                     "Selesaikan Inspeksi",
                     style: TextStyle(
@@ -73,46 +220,6 @@ class InspectContent extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showConfirmDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: const Text(
-            "Pengiriman Data",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          content: const Text(
-            "Data yang akan dikirimkan tidak bisa dirubah setelah selesai inspeksi.\n\nApakah anda sudah yakin?",
-            style: TextStyle(fontSize: 14, height: 1.5),
-          ),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Tidak", style: TextStyle(color: Colors.white)),
-            ),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-              onPressed: () {
-                Navigator.pop(context);
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text("Data dikirim!")));
-              },
-              child: const Text("Ya", style: TextStyle(color: Colors.white)),
-            ),
-          ],
-        );
-      },
     );
   }
 }
