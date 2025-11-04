@@ -112,7 +112,7 @@ class _GanjalRodaState extends State<GanjalRodaContent> {
                   ),
                   onPressed: saveGanjalRodaData,
                   child: const Text(
-                    "Selesaikan Inspeksi",
+                    "Simpan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

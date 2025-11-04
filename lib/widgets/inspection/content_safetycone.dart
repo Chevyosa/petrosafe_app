@@ -100,7 +100,7 @@ class _SafetyConeContentState extends State<SafetyConeContent> {
                   ),
                   onPressed: saveSafetyConeData,
                   child: const Text(
-                    "Selesaikan Inspeksi",
+                    "Simpan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

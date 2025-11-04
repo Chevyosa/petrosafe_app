@@ -89,6 +89,8 @@ class _AparContentState extends State<AparContent> {
       ),
     );
 
+    Navigator.pop(context);
+
     debugPrint(jsonEncode(aparData));
   }
 
@@ -150,7 +152,7 @@ class _AparContentState extends State<AparContent> {
                   ),
                   onPressed: saveAparData,
                   child: const Text(
-                    "Selesaikan Inspeksi",
+                    "Simpan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

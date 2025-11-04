@@ -134,7 +134,7 @@ class _SpillkitContentState extends State<SpillkitContent> {
                   ),
                   onPressed: saveSpillkitData,
                   child: const Text(
-                    "Selesaikan Inspeksi",
+                    "Simpan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

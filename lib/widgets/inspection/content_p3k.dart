@@ -138,7 +138,7 @@ class _P3KContentState extends State<P3KContent> {
                   ),
                   onPressed: saveP3KData,
                   child: const Text(
-                    "Selesaikan Inspeksi",
+                    "Simpan",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
