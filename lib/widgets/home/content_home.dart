@@ -94,6 +94,30 @@ class _HomeContentState extends State<HomeContent> {
     }
   }
 
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 4 && hour < 11) {
+      return "Selamat Pagi!";
+    } else if (hour >= 11 && hour < 15) {
+      return "Selamat Siang!";
+    } else if (hour >= 15 && hour < 18) {
+      return "Selamat Sore";
+    } else {
+      return "Selamat Malam!";
+    }
+  }
+
+  String getActivity() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 17) {
+      return "Beristirahat";
+    } else {
+      return "Beraktifitas";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,11 +131,11 @@ class _HomeContentState extends State<HomeContent> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text(
-                  "Selamat Pagi",
+                Text(
+                  getGreeting(),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const Row(
+                Row(
                   children: <Widget>[
                     Text(
                       "Selamat ",
@@ -122,7 +146,7 @@ class _HomeContentState extends State<HomeContent> {
                       ),
                     ),
                     Text(
-                      "Beraktifitas",
+                      getActivity(),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -182,7 +206,7 @@ class _HomeContentState extends State<HomeContent> {
                 else if (historyData.isEmpty)
                   const Text("Belum ada data inspeksi.")
                 else
-                  for (var item in historyData)
+                  for (var item in historyData.take(3))
                     HistoryDataCard(
                       urlPhoto: item["urlPhoto"],
                       platenumber: item["platenumber"],

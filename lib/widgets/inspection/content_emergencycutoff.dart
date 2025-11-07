@@ -117,7 +117,7 @@ class _EmergencyCutOffState extends State<EmergencyCutOffContent> {
               const Text("Kesesuaian"),
               const SizedBox(height: 8),
               ConformityCard(
-                title: "Apakah Emergency Cut Off Sessdsduai?",
+                title: "Apakah Emergency Cut Off Sesuai?",
                 onChanged: (data) => setState(() => conformityData = data),
               ),
 

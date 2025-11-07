@@ -41,7 +41,7 @@ class _ConformityCardState extends State<ConformityCard> {
     widget.onChanged?.call({
       "status": v.name,
       "note": _messageController.text,
-      "photo": _photoPath,
+      "photoPath": _photoPath,
     });
   }
 
@@ -52,7 +52,7 @@ class _ConformityCardState extends State<ConformityCard> {
       widget.onChanged?.call({
         "status": _selected!.name,
         "note": _messageController.text,
-        "photo": path,
+        "photoPath": path,
       });
     }
   }
@@ -62,7 +62,7 @@ class _ConformityCardState extends State<ConformityCard> {
       widget.onChanged?.call({
         "status": _selected!.name,
         "note": text,
-        "photo": _photoPath,
+        "photoPath": _photoPath,
       });
     }
   }

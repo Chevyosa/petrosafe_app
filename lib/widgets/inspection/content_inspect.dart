@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:petrosafe_app/pages/page_main.dart';
 import 'package:petrosafe_app/widgets/buttons/buttons_inspection.dart';
 import 'package:petrosafe_app/widgets/inspection/content_apar.dart';
 import 'package:petrosafe_app/widgets/inspection/content_emergencycutoff.dart';
@@ -204,7 +205,7 @@ class _InspectContentState extends State<InspectContent> {
             final inspection = Map<String, dynamic>.from(
               posData["inspection"] ?? {},
             );
-            final sesuai = asBool(inspection["status"]); // <-- pakai asBool
+            final sesuai = asBool(inspection["status"]);
             final note = inspection["note"];
             final photoPath = inspection["photoPath"];
 
@@ -566,6 +567,12 @@ class _InspectContentState extends State<InspectContent> {
         );
 
         await _clearOldInspectionData();
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const MainPage()),
+          (Route<dynamic> route) => false,
+        );
       } else {
         throw Exception("Gagal kirim inspeksi (${response.statusCode})");
       }
