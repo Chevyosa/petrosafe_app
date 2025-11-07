@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class NoteForm extends StatelessWidget {
+class LoginForm extends StatelessWidget {
   final String hintText;
-  final TextEditingController messageController;
-  final ValueChanged<String>? onChanged;
+  final TextEditingController controller;
+  final bool obscureText;
 
-  const NoteForm({
+  const LoginForm({
     super.key,
     required this.hintText,
-    required this.messageController,
-    this.onChanged,
+    required this.controller,
+    this.obscureText = false,
   });
 
   @override
@@ -17,14 +17,14 @@ class NoteForm extends StatelessWidget {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.circular(16),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(color: Colors.blue),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 12),
         child: TextField(
-          maxLines: 3,
-          controller: messageController,
+          controller: controller,
+          obscureText: obscureText,
           decoration: InputDecoration(
             border: InputBorder.none,
             hintText: hintText,

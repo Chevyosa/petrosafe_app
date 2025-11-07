@@ -6,7 +6,7 @@ enum Conformity { sesuai, tidakSesuai }
 
 class ConformityCard extends StatefulWidget {
   final String title;
-  final ValueChanged<Conformity>? onChanged;
+  final ValueChanged<Map<String, dynamic>>? onChanged;
   final Conformity? initial;
 
   const ConformityCard({
@@ -21,18 +21,50 @@ class ConformityCard extends StatefulWidget {
 }
 
 class _ConformityCardState extends State<ConformityCard> {
-  late Conformity _selected;
+  Conformity? _selected;
   final TextEditingController _messageController = TextEditingController();
+  String? _photoPath;
 
   @override
   void initState() {
     super.initState();
-    _selected = widget.initial ?? Conformity.sesuai;
+    _selected = widget.initial;
+    _messageController.addListener(() {
+      if (_selected != null && _selected == Conformity.tidakSesuai) {
+        _setNote(_messageController.text);
+      }
+    });
   }
 
   void _set(Conformity v) {
     setState(() => _selected = v);
-    widget.onChanged?.call(v);
+    widget.onChanged?.call({
+      "status": v.name,
+      "note": _messageController.text,
+      "photo": _photoPath,
+    });
+  }
+
+  void _setPhoto(String path) {
+    setState(() => _photoPath = path);
+
+    if (_selected != null) {
+      widget.onChanged?.call({
+        "status": _selected!.name,
+        "note": _messageController.text,
+        "photo": path,
+      });
+    }
+  }
+
+  void _setNote(String text) {
+    if (_selected != null) {
+      widget.onChanged?.call({
+        "status": _selected!.name,
+        "note": text,
+        "photo": _photoPath,
+      });
+    }
   }
 
   @override
@@ -84,16 +116,18 @@ class _ConformityCardState extends State<ConformityCard> {
 
         if (_selected == Conformity.tidakSesuai) ...[
           const SizedBox(height: 12),
-          const CameraCard(
+          CameraCard(
             targetFoto: "Foto Kelengkapan",
             sisiFoto: "Kelengkapan",
             tujuanFoto: "Tidak Sesuai",
+            onCaptured: (path) => _setPhoto(path),
           ),
           const SizedBox(height: 8),
           const Text("Catatan"),
           NoteForm(
             hintText: "Masukkan Keterangan atau Catatan",
             messageController: _messageController,
+            onChanged: (text) => _setNote(text),
           ),
         ],
       ],
@@ -104,7 +138,7 @@ class _ConformityCardState extends State<ConformityCard> {
 class _Option extends StatelessWidget {
   final String label;
   final Conformity value;
-  final Conformity group;
+  final Conformity? group;
   final VoidCallback onTap;
 
   const _Option({
@@ -117,7 +151,6 @@ class _Option extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Column(
         children: [

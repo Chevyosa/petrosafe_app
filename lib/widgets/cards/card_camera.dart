@@ -7,14 +7,15 @@ class CameraCard extends StatefulWidget {
   final String targetFoto;
   final String sisiFoto;
   final String tujuanFoto;
-  final Function(XFile?)? onImageTaken;
+
+  final ValueChanged<String>? onCaptured;
 
   const CameraCard({
     super.key,
     required this.targetFoto,
     required this.sisiFoto,
     required this.tujuanFoto,
-    this.onImageTaken,
+    this.onCaptured,
   });
 
   @override
@@ -30,7 +31,8 @@ class _CameraCardState extends State<CameraCard> {
 
     if (image != null) {
       setState(() => _capturedImage = image);
-      widget.onImageTaken?.call(image);
+
+      widget.onCaptured?.call(image.path);
     }
   }
 
