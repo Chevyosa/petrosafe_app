@@ -70,8 +70,6 @@ class _SpillkitContentState extends State<SpillkitContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(spillkitData));
   }
 
   @override
@@ -142,17 +140,6 @@ class _SpillkitContentState extends State<SpillkitContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              Text(
-                "Debug Data:\n"
-                "Sekop: $sekopData\n"
-                "Pad: $padData\n"
-                "Plastik: $plastikData\n"
-                "Sarung: $sarungData\n"
-                "Glass: $glassData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

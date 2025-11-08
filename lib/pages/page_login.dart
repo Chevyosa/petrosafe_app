@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:petrosafe_app/pages/page_main.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -29,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> login() async {
     setState(() => isLoading = true);
 
-    final url = Uri.parse("http://10.0.2.2:3000/api/auth/login");
+    final baseUrl = dotenv.env["API_BASE_URL"];
+    final url = Uri.parse("$baseUrl/api/auth/login");
     final body = {
       "email": emailController.text.trim(),
       "password": passwordController.text.trim(),
@@ -125,12 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Masukkan Kata Sandi Anda",
                   controller: passwordController,
                   obscureText: true,
-                ),
-
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [Text("Lupa Kata Sandi?")],
                 ),
 
                 const SizedBox(height: 24),

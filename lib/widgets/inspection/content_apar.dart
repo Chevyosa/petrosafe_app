@@ -90,8 +90,6 @@ class _AparContentState extends State<AparContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(aparData));
   }
 
   @override
@@ -160,15 +158,6 @@ class _AparContentState extends State<AparContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              Text(
-                "Debug:\n"
-                "Kanan: $rightAparData\n"
-                "Kiri: $leftAparData\n"
-                "Kabin: $cabinAparData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),
