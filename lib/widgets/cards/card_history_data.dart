@@ -30,7 +30,13 @@ class HistoryDataCard extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Row(
           children: <Widget>[
-            CircleAvatar(backgroundImage: AssetImage(urlPhoto), radius: 32),
+            CircleAvatar(
+              backgroundImage: urlPhoto.isNotEmpty
+                  ? NetworkImage(urlPhoto)
+                  : const AssetImage("lib/assets/images/Truk.png")
+                        as ImageProvider,
+              radius: 32,
+            ),
             SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

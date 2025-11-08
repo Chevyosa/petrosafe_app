@@ -59,16 +59,18 @@ class _HomeContentState extends State<HomeContent> {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         final List inspections = data['data'] ?? [];
+        const baseUrl = "http://10.0.2.2:3000";
 
-        final List<Map<String, dynamic>> mapped = inspections.map((item) {
+        final mapped = inspections.map<Map<String, dynamic>>((item) {
           final DateTime date =
               DateTime.tryParse(item['inspection_date'] ?? '') ??
               DateTime.now();
 
           return {
-            "urlPhoto": "lib/assets/images/Truk.png",
+            "urlPhoto": item["photo_path"] != null
+                ? "$baseUrl/${item["photo_path"]}"
+                : "",
             "platenumber": item["nopol"] ?? "-",
             "inspector": item["inspector"] ?? "-",
             "capacity": item["kapasitas"] ?? "-",
@@ -82,6 +84,7 @@ class _HomeContentState extends State<HomeContent> {
           isLoading = false;
         });
       } else {
+        setState(() => isLoading = false);
         throw Exception(
           'Gagal mengambil data inspeksi (${response.statusCode})',
         );
