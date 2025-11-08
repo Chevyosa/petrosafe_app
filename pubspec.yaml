@@ -49,6 +49,7 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
@@ -70,6 +71,7 @@ flutter:
   uses-material-design: true
   assets:
     - lib/assets/images/
+    - lib/assets/icons/
     - .env
 
   # To add assets to your application, add an assets section, like this:
@@ -112,3 +114,10 @@ flutter_native_splash:
   android_12:
     image: lib/assets/images/play_store_512.png
     icon_background_color: "#ffffff"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icons/ic_launcher.png"
+  adaptive_icon_background: "lib/assets/icons/ic_launcher_background.png"
+  adaptive_icon_foreground: "lib/assets/icons/ic_launcher_foreground.png"
