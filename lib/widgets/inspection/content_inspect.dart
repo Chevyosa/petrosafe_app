@@ -193,6 +193,7 @@ class _InspectContentState extends State<InspectContent> {
         '0',
         'no',
         'nggak',
+        'rusak',
       ].contains(s)) {
         return false;
       }
@@ -244,6 +245,28 @@ class _InspectContentState extends State<InspectContent> {
               "value": posData["brand"] ?? "",
               if (!sesuai && note != null) "note": note,
               if (!sesuai && photoPath != null) "photoPath": photoPath,
+            });
+
+            final pressureData = Map<String, dynamic>.from(
+              posData["pressure"] ?? {},
+            );
+            final pressureValue = pressureData["value"];
+            if (pressureValue != null && pressureValue.toString().isNotEmpty) {
+              allItems.add({
+                "item_key": "apar_${label}_pressure",
+                "sesuai": true,
+                "value": pressureValue.toString(),
+              });
+            }
+
+            final conditionData = Map<String, dynamic>.from(
+              posData["condition"] ?? {},
+            );
+            final conditionStatus = asBool(conditionData["status"]);
+            allItems.add({
+              "item_key": "apar_${label}_kondisi_fisik",
+              "sesuai": conditionStatus,
+              "value": conditionStatus ? "Baik" : "Rusak",
             });
           }
 
