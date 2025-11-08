@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:petrosafe_app/widgets/cards/card_condition.dart';
 import 'package:petrosafe_app/widgets/cards/card_conformity.dart';
+import 'package:petrosafe_app/widgets/cards/card_pressure.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,8 +22,14 @@ class _AparContentState extends State<AparContent> {
   final cabinBrand = TextEditingController();
 
   Map<String, dynamic>? rightAparData;
+  Map<String, dynamic>? rightAparPressure;
+  Map<String, dynamic>? rightAparCondition;
   Map<String, dynamic>? leftAparData;
+  Map<String, dynamic>? leftAparPressure;
+  Map<String, dynamic>? leftAparCondition;
   Map<String, dynamic>? cabinAparData;
+  Map<String, dynamic>? cabinAparPressure;
+  Map<String, dynamic>? cabinAparCondition;
 
   Future<void> saveAparData() async {
     final missingFields = <String>[];
@@ -46,6 +54,26 @@ class _AparContentState extends State<AparContent> {
       missingFields.add("Hasil pemeriksaan APAR Kabin");
     }
 
+    if (rightAparPressure == null || rightAparPressure?['value'] == null) {
+      missingFields.add("Hasil Pressure APAR Kanan");
+    }
+    if (leftAparPressure == null || leftAparPressure?['value'] == null) {
+      missingFields.add("Hasil Pressure APAR Kiri");
+    }
+    if (cabinAparPressure == null || cabinAparPressure?['value'] == null) {
+      missingFields.add("Hasil Pressure APAR Kabin");
+    }
+
+    if (rightAparCondition == null || rightAparCondition?['status'] == null) {
+      missingFields.add("Hasil Kondisi APAR Kanan");
+    }
+    if (leftAparCondition == null || leftAparCondition?['status'] == null) {
+      missingFields.add("Hasil Kondisi APAR Kiri");
+    }
+    if (cabinAparCondition == null || cabinAparCondition?['status'] == null) {
+      missingFields.add("Hasil Kondisi APAR Kabin");
+    }
+
     if (missingFields.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -66,16 +94,22 @@ class _AparContentState extends State<AparContent> {
         "size": rightSize.text,
         "brand": rightBrand.text,
         "inspection": rightAparData,
+        "condition": rightAparCondition,
+        "pressure": rightAparPressure,
       },
       "left": {
         "size": leftSize.text,
         "brand": leftBrand.text,
         "inspection": leftAparData,
+        "condition": leftAparCondition,
+        "pressure": leftAparPressure,
       },
       "cabin": {
         "size": cabinSize.text,
         "brand": cabinBrand.text,
         "inspection": cabinAparData,
+        "condition": cabinAparCondition,
+        "pressure": cabinAparPressure,
       },
       "timestamp": DateTime.now().toIso8601String(),
     };
@@ -118,6 +152,14 @@ class _AparContentState extends State<AparContent> {
                 title: "APAR Kanan Sesuai?",
                 onChanged: (data) => setState(() => rightAparData = data),
               ),
+              PressureCard(
+                title: "Pressure Kanan",
+                onChanged: (data) => setState(() => rightAparPressure = data),
+              ),
+              ConditionCard(
+                title: "Kondisi",
+                onChanged: (data) => setState(() => rightAparCondition = data),
+              ),
 
               const SizedBox(height: 32),
               const Text("Belakang Kiri"),
@@ -129,6 +171,14 @@ class _AparContentState extends State<AparContent> {
                 title: "APAR Kiri Sesuai?",
                 onChanged: (data) => setState(() => leftAparData = data),
               ),
+              PressureCard(
+                title: "Pressure Kiri",
+                onChanged: (data) => setState(() => leftAparPressure = data),
+              ),
+              ConditionCard(
+                title: "Kondisi",
+                onChanged: (data) => setState(() => leftAparCondition = data),
+              ),
 
               const SizedBox(height: 32),
               const Text("Kabin"),
@@ -139,6 +189,14 @@ class _AparContentState extends State<AparContent> {
               ConformityCard(
                 title: "APAR Kabin Sesuai?",
                 onChanged: (data) => setState(() => cabinAparData = data),
+              ),
+              PressureCard(
+                title: "Pressure Kabin",
+                onChanged: (data) => setState(() => cabinAparPressure = data),
+              ),
+              ConditionCard(
+                title: "Kondisi",
+                onChanged: (data) => setState(() => cabinAparCondition = data),
               ),
 
               const SizedBox(height: 32),
