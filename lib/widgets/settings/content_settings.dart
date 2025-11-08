@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:petrosafe_app/pages/page_login.dart';
+import 'package:petrosafe_app/widgets/settings/content_register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsContent extends StatefulWidget {
@@ -88,14 +89,46 @@ class _SettingsContentState extends State<SettingsContent> {
                 ],
               ),
 
-              SizedBox(height: 32),
+              const SizedBox(height: 32),
+
+              if (userPosition.toLowerCase() == 'admin') ...[
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue[700],
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterContent(),
+                      ),
+                    );
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(FeatherIcons.userPlus, color: Colors.white),
+                        SizedBox(width: 10),
+                        Text(
+                          "Tambah Pengguna Baru",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                        Spacer(),
+                        Icon(CupertinoIcons.chevron_right, color: Colors.white),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+              ],
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red[700],
                 ),
                 onPressed: () => logout(context),
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.only(top: 12, bottom: 12),
                   child: Row(
                     children: <Widget>[
