@@ -171,10 +171,31 @@ class _InspectContentState extends State<InspectContent> {
 
   bool asBool(dynamic v) {
     if (v is bool) return v;
-    if (v is num) return v != 0; // 1/0, 1.0/0.0
+    if (v is num) return v != 0;
     if (v is String) {
       final s = v.trim().toLowerCase();
-      return s == 'true' || s == '1' || s == 'ya';
+      if ([
+        'sesuai',
+        'true',
+        '1',
+        'ya',
+        'ok',
+        'baik',
+        'berfungsi',
+      ].contains(s)) {
+        return true;
+      }
+      if ([
+        'tidakSesuai',
+        'tidak sesuai',
+        'tidakBerfungsi',
+        'false',
+        '0',
+        'no',
+        'nggak',
+      ].contains(s)) {
+        return false;
+      }
     }
     return false;
   }
