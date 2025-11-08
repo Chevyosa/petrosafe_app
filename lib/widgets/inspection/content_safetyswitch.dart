@@ -59,8 +59,6 @@ class _SafetySwitchContentState extends State<SafetySwitchContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(safetySwitchData));
   }
 
   @override
@@ -113,15 +111,6 @@ class _SafetySwitchContentState extends State<SafetySwitchContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Debug Data:\n"
-                "Functionality: $functionalityData\n"
-                "Conformity: $conformityData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

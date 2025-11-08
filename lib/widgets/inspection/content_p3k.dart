@@ -70,8 +70,6 @@ class _P3KContentState extends State<P3KContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(p3kData));
   }
 
   @override
@@ -146,17 +144,6 @@ class _P3KContentState extends State<P3KContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              Text(
-                "Debug Data:\n"
-                "Antiseptik: $antiseptikData\n"
-                "Perban: $perbanData\n"
-                "Plester: $plesterData\n"
-                "Salep: $salepData\n"
-                "Obat Mata: $obatMataData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

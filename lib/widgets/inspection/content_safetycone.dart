@@ -57,8 +57,6 @@ class _SafetyConeContentState extends State<SafetyConeContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(data));
   }
 
   @override
@@ -108,13 +106,6 @@ class _SafetyConeContentState extends State<SafetyConeContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Debug Data:\n${coneInspectionData ?? "-"}",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

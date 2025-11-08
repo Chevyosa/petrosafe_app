@@ -69,8 +69,6 @@ class _GroundingContentState extends State<GroundingContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(data));
   }
 
   @override
@@ -133,15 +131,6 @@ class _GroundingContentState extends State<GroundingContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Debug Data:\n"
-                "Grounding: $groundingData\n"
-                "Arde: $ardeData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

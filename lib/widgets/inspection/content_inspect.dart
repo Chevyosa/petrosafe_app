@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:petrosafe_app/pages/page_main.dart';
 import 'package:petrosafe_app/widgets/buttons/buttons_inspection.dart';
 import 'package:petrosafe_app/widgets/inspection/content_apar.dart';
@@ -82,9 +83,6 @@ class _InspectContentState extends State<InspectContent> {
     for (final item in inspections) {
       await prefs.remove(item["key"] as String);
     }
-    debugPrint(
-      "Semua data inspeksi lokal dihapus saat keluar/masuk halaman InspectContent",
-    );
   }
 
   Future<void> _validateAllInspections(BuildContext context) async {
@@ -570,29 +568,12 @@ class _InspectContentState extends State<InspectContent> {
         }
       }
 
-      final dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:3000/api"));
+      final baseUrl = dotenv.env["API_BASE_URL"];
+      final dio = Dio(BaseOptions(baseUrl: baseUrl!));
       final token = prefs.getString("token");
 
-      // --- LOGGING SEBELUM REQUEST ---
-      debugPrint("=== 🧾 INSPECTION FORM DATA ===");
-      debugPrint("Nopol: $nopol");
-      debugPrint("Kapasitas: $kapasitas");
-      debugPrint("Kategori: $kategori");
-      debugPrint("Token: ${token?.substring(0, 15)}...");
-
-      debugPrint("Items JSON:");
-      debugPrint(const JsonEncoder.withIndent('  ').convert(allItems));
-
-      debugPrint("📎 Files to upload:");
-      for (final f in formData.files) {
-        debugPrint(
-          " - ${f.key}: ${(f.value.length)} bytes (${f.value.filename})",
-        );
-      }
-      debugPrint("==============================");
-
       final response = await dio.post(
-        "/inspections",
+        "/api/inspections",
         data: formData,
         options: Options(
           headers: {

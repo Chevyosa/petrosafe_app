@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:petrosafe_app/widgets/forms/form_inspection.dart';
 import 'package:petrosafe_app/widgets/forms/form_login.dart';
 
@@ -37,10 +38,11 @@ class _RegisterContentState extends State<RegisterContent> {
     try {
       setState(() => _loading = true);
 
-      final dio = Dio(BaseOptions(baseUrl: "http://10.0.2.2:3000/api"));
+      final baseUrl = dotenv.env["API_BASE_URL"];
+      final dio = Dio(BaseOptions(baseUrl: baseUrl!));
 
       final response = await dio.post(
-        "/auth/register",
+        "/api/auth/register",
         data: {
           "name": name,
           "email": email,
@@ -57,12 +59,11 @@ class _RegisterContentState extends State<RegisterContent> {
           ),
         );
 
-        Navigator.pop(context); // ✅ langsung balik ke halaman sebelumnya
+        Navigator.pop(context);
       } else {
         throw Exception("Gagal daftar (${response.statusCode})");
       }
     } on DioException catch (e) {
-      debugPrint("Register error: ${e.response?.data ?? e.message}");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
@@ -73,7 +74,6 @@ class _RegisterContentState extends State<RegisterContent> {
         ),
       );
     } catch (e) {
-      debugPrint("Error umum: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text("Terjadi kesalahan: $e"),

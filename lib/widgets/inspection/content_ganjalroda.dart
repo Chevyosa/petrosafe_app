@@ -62,8 +62,6 @@ class _GanjalRodaState extends State<GanjalRodaContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(data));
   }
 
   @override
@@ -120,13 +118,6 @@ class _GanjalRodaState extends State<GanjalRodaContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Debug Data:\n${wheelStopData ?? "-"}",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

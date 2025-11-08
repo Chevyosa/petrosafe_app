@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -56,7 +57,6 @@ class _HistoryContentState extends State<HistoryContent> {
     }
   }
 
-  /// 📤 Fungsi ekspor ke Excel
   Future<void> exportToExcel() async {
     try {
       if (selectedRange == null) {
@@ -80,8 +80,8 @@ class _HistoryContentState extends State<HistoryContent> {
       final to = DateFormat('yyyy-MM-dd').format(selectedRange!.end);
       final dio = Dio();
 
-      final url =
-          'http://10.0.2.2:3000/api/inspections/export?from=$from&to=$to';
+      final baseUrl = dotenv.env["API_BASE_URL"];
+      final url = '$baseUrl/api/inspections/export?from=$from&to=$to';
       final filePath = '/storage/emulated/0/Download/riwayat_inspeksi.xlsx';
 
       final response = await dio.download(
@@ -125,7 +125,8 @@ class _HistoryContentState extends State<HistoryContent> {
         throw Exception('Token tidak ditemukan, silakan login kembali.');
       }
 
-      final url = Uri.parse('http://10.0.2.2:3000/api/inspections');
+      final baseUrl = dotenv.env["API_BASE_URL"];
+      final url = Uri.parse('$baseUrl/api/inspections');
       final response = await http.get(
         url,
         headers: {
@@ -137,7 +138,7 @@ class _HistoryContentState extends State<HistoryContent> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List inspections = data['data'] ?? [];
-        const baseUrl = "http://10.0.2.2:3000";
+        final baseUrl = dotenv.env["API_BASE_URL"];
 
         final mapped = inspections.map<Map<String, dynamic>>((item) {
           final DateTime date =

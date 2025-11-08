@@ -124,8 +124,6 @@ class _AparContentState extends State<AparContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(aparData));
   }
 
   @override
@@ -218,21 +216,6 @@ class _AparContentState extends State<AparContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              Text(
-                "Debug:\n"
-                "Kanan: $rightAparData\n"
-                "Pressure Kanan: $rightAparPressure\n"
-                "Kondisi Kanan: $rightAparCondition\n"
-                "Kiri: $leftAparData\n"
-                "Pressure Kiri: $leftAparPressure\n"
-                "Kondisi Kiri: $leftAparCondition\n"
-                "Kabin: $cabinAparData"
-                "Pressure Kabin: $cabinAparPressure\n"
-                "Kondisi Kabin: $cabinAparCondition\n",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

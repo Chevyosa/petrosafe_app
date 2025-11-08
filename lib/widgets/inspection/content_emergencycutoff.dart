@@ -74,8 +74,6 @@ class _EmergencyCutOffState extends State<EmergencyCutOffContent> {
     );
 
     Navigator.pop(context);
-
-    debugPrint(jsonEncode(emergencyCutOffData));
   }
 
   @override
@@ -140,16 +138,6 @@ class _EmergencyCutOffState extends State<EmergencyCutOffContent> {
                     ),
                   ),
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              Text(
-                "Debug Data:\n"
-                "Total: ${totalController.text}\n"
-                "Functionality: $functionalityData\n"
-                "Conformity: $conformityData",
-                style: const TextStyle(color: Colors.grey, fontSize: 13),
               ),
             ],
           ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -48,7 +49,8 @@ class _HomeContentState extends State<HomeContent> {
         throw Exception('Token tidak ditemukan, silakan login kembali.');
       }
 
-      final url = Uri.parse('http://10.0.2.2:3000/api/inspections');
+      final baseUrl = dotenv.env["API_BASE_URL"];
+      final url = Uri.parse('$baseUrl/api/inspections');
       final response = await http.get(
         url,
         headers: {
@@ -60,7 +62,7 @@ class _HomeContentState extends State<HomeContent> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List inspections = data['data'] ?? [];
-        const baseUrl = "http://10.0.2.2:3000";
+        final baseUrl = dotenv.env["API_BASE_URL"];
 
         final mapped = inspections.map<Map<String, dynamic>>((item) {
           final DateTime date =
