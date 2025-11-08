@@ -161,7 +161,7 @@ class _HomeContentState extends State<HomeContent> {
                     CircleAvatar(
                       backgroundImage: userPhoto.isNotEmpty
                           ? NetworkImage(userPhoto)
-                          : const AssetImage("lib/assets/images/userphoto.jpeg")
+                          : const AssetImage("lib/assets/images/userPhoto.png")
                                 as ImageProvider,
                       radius: 50,
                     ),

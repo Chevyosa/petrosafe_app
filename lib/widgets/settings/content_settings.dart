@@ -64,7 +64,7 @@ class _SettingsContentState extends State<SettingsContent> {
                   CircleAvatar(
                     backgroundImage: userPhoto.isNotEmpty
                         ? NetworkImage(userPhoto)
-                        : const AssetImage("lib/assets/images/userphoto.jpeg")
+                        : const AssetImage("lib/assets/images/userPhoto.png")
                               as ImageProvider,
                     radius: 50,
                   ),
